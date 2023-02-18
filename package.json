@@ -1,0 +1,14 @@
+{
+  "name": "experiments",
+  "version": "0.0.0",
+  "description": "Webdev experiments",
+  "scripts": {
+    "listing": "wsl sh listing.sh || sh listing.sh",
+    "serve": "http-server -c-1",
+    "start": "npm run listing && npm run serve"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "http-server": "^14.1.1"
+  }
+}
