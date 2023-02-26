@@ -1,3 +1,4 @@
-window.$ = document.querySelector.bind(document);
+// jQuery lite
+window.S = document.querySelector.bind(document);
 
-$('body').innerHTML = "<span id='test'>Working!</span>";
+S('body').innerHTML = "<span id='test'>Working!</span>";
