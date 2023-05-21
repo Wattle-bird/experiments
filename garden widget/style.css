@@ -2,3 +2,10 @@ body {
   background: black;
   color: white;
 }
+
+#content {
+  width: 320px;
+  height: 480px;
+  background: brown;
+  margin: 10px auto;
+}
