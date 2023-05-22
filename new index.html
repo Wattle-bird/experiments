@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unnamed experiment</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <pre id=out>hhhh</pre>
+  <script>
+    async function main() {
+      let branchUrl = "https://api.github.com/repos/wattle-bird/experiments/branches/master"
+      let branchData = await fetch(branchUrl)
+      let branch= await branchData.json()
+       
+      let treeURL = branch.commit.commit.tree.url
+      let treeData = await fetch(treeURL)
+      let tree = await treeData.json()
+      
+      tree.tree.forEach(async (item) => {
+        if (item.type === "tree" && item.path != "TEMPLATE") {
+          let itemData = await fetch(item.url)
+          let itemTree = await itemData.json() 
+          // check if the tree has an index file
+          if (itemTree.tree.some((file) => {
+            //console.log(file.path)
+            return file.path === "index.html"
+          })) {
+            console.log(item.path)
+          }
+        }
+      })
+      
+      //document.querySelector('#out').innerHTML= JSON.stringify(tree)
+    }
+    main()
+  </script>
+  
+</body>
+</html>
