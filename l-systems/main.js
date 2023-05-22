@@ -6,9 +6,6 @@ function rand(x) {
   return Math.random() * x
 }
 
-
-ctx.fillRect(0,0,1000,1000)
-
 // b is branch
 // l is leaf
 // f is flower
@@ -19,7 +16,7 @@ ctx.fillRect(0,0,1000,1000)
 let rules = {
   b: "b(+l)(--l)b", 
   l: "b((+l)++lf)(f-l)",
-  f: ""
+  f: "(--l)"
 }
 
 // in radians
@@ -29,8 +26,8 @@ let lineLength = 25
 let actions = {
   b() {
     ctx.beginPath()
-    ctx.strokeStyle = "#a65"
-    ctx.lineWidth = 7
+    ctx.strokeStyle = "#b86"
+    ctx.lineWidth = 6
     ctx.lineCap = "butt"
     ctx.moveTo(0,0)
     ctx.translate(0,-lineLength)
@@ -40,9 +37,9 @@ let actions = {
   l() {
     ctx.beginPath()
     ctx.strokeStyle = "green"
-    ctx.lineWidth = 15
+    ctx.lineWidth = 12
     ctx.lineCap = "round"
-    ctx.moveTo(0, 0)
+    ctx.moveTo(0, -9)
     ctx.translate(0, -lineLength)
     ctx.lineTo(0, 0)
     ctx.stroke()
@@ -54,10 +51,10 @@ let actions = {
     ctx.fill()
   }, 
   "+": () => {
-    ctx.rotate(-angle)
+    ctx.rotate(-angle + Math.sin(ticks/99)*0.1)
   }, 
   "-": () => {
-    ctx.rotate(angle)
+    ctx.rotate(angle + Math.sin(ticks/99)*0.1)
   }, 
   "(": () => {
     ctx.save()
@@ -83,7 +80,12 @@ function iterate() {
 }
 upto(5, iterate)
 
+let ticks = 0
+
 function draw() {
+  canvas.width += 0
+  ticks++
+  
   ctx.save()
   ctx.translate(500, 1000)
   
@@ -92,6 +94,8 @@ function draw() {
   })
   
   ctx.restore()
+  
+  requestAnimationFrame(draw)
 }
 
 draw()
