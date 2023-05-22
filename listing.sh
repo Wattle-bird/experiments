@@ -1,2 +1,2 @@
 #!/bin/sh
-tree -H "." -P "*.html" -I node_modules --prune > index.html
+tree -H "." -P "*.html" -I node_modules --prune > tree.html
