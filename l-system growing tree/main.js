@@ -14,7 +14,7 @@ function rand(x) {
 // + is turn left
 // - is turn right
 let rules = {
-  b: "b(+l)(--l)b", 
+  b: "b(+l)(--l)b",
   l: "b((+l)++lf)(f-l)",
   f: "(--l)"
 }
@@ -29,36 +29,36 @@ let actions = {
     ctx.strokeStyle = "#b86"
     ctx.lineWidth = 6
     ctx.lineCap = "butt"
-    ctx.moveTo(0,0)
-    ctx.translate(0,-lineLength)
-    ctx.lineTo(0,0)
+    ctx.moveTo(0, 0)
+    ctx.translate(0, (-lineLength) * step / 24)
+    ctx.lineTo(0, 0)
     ctx.stroke()
-  }, 
+  },
   l() {
     ctx.beginPath()
     ctx.strokeStyle = "green"
     ctx.lineWidth = 12
     ctx.lineCap = "round"
     ctx.moveTo(0, -9)
-    ctx.translate(0, -lineLength)
+    ctx.translate(0, (-lineLength) * step / 24)
     ctx.lineTo(0, 0)
     ctx.stroke()
   },
   f() {
     ctx.beginPath()
     ctx.fillStyle = "pink"
-    ctx.arc(0,10,6,0,7)
+    ctx.arc(0, 10, 6, 0, 7)
     ctx.fill()
-  }, 
+  },
   "+": () => {
-    ctx.rotate(-angle + Math.sin(ticks/99)*0.1)
-  }, 
+    ctx.rotate(-angle)
+  },
   "-": () => {
-    ctx.rotate(angle + Math.sin(ticks/99)*0.1)
-  }, 
+    ctx.rotate(angle)
+  },
   "(": () => {
     ctx.save()
-  }, 
+  },
   ")": () => {
     ctx.restore()
   }
@@ -78,24 +78,31 @@ function iterate() {
   })
   string = newChars.join("")
 }
-upto(5, iterate)
+//upto(5, iterate)
 
-let ticks = 0
+let step = 0
 
 function draw() {
   canvas.width += 0
-  ticks++
-  
+  step++
+  step = step % 24
+  if (!(step % 4)) {
+    iterate()
+  }
+  if (step === 0) {
+    string = "l"
+  }
+
   ctx.save()
   ctx.translate(500, 1000)
-  
+
   string.split("").forEach((char) => {
     actions[char]()
   })
-  
+
   ctx.restore()
-  
-  requestAnimationFrame(draw)
+
+  setTimeout(draw, 1000 / 3)
 }
 
 draw()
