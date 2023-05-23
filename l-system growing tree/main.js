@@ -14,9 +14,19 @@ function rand(x) {
 // + is turn left
 // - is turn right
 let rules = {
-  b: "b(+l)(--l)b",
-  l: "b((+l)++lf)(f-l)",
-  f: "(--l)"
+  "3": "30(+l)(--l)",
+  get l() {
+    if (rand(3) > 1)
+      return "0((+l)++lf)(f-l)"
+    return "(+l)0(-l)f"
+  },
+  f: "l"
+}
+
+let growthRules = {
+  "0": "1",
+  "1": "2",
+  "2": "3"
 }
 
 // in radians
@@ -24,22 +34,24 @@ let angle = 0.5
 let lineLength = 25
 
 let actions = {
-  b() {
-    ctx.beginPath()
-    ctx.strokeStyle = "#b86"
-    ctx.lineWidth = 6
-    ctx.lineCap = "butt"
-    ctx.moveTo(0, 0)
-    ctx.translate(0, (-lineLength) * step / 24)
-    ctx.lineTo(0, 0)
-    ctx.stroke()
+  "0": () => {
+    drawBranch(1)
+  },
+  "1": () => {
+    drawBranch(2)
+  },
+  "2": () => {
+    drawBranch(3)
+  },
+  "3": () => {
+    drawBranch(4)
   },
   l() {
     ctx.beginPath()
     ctx.strokeStyle = "green"
-    ctx.lineWidth = 12
+    ctx.lineWidth = 9
     ctx.lineCap = "round"
-    ctx.moveTo(0, -9)
+    ctx.moveTo(0, -5)
     ctx.translate(0, (-lineLength) * step / 24)
     ctx.lineTo(0, 0)
     ctx.stroke()
@@ -64,10 +76,21 @@ let actions = {
   }
 }
 
+function drawBranch(size) {
+  ctx.beginPath()
+  ctx.strokeStyle = "#b86"
+  ctx.lineWidth = 6
+  ctx.lineCap = "butt"
+  ctx.moveTo(0, 0)
+  ctx.translate(0, (-lineLength) * size/4)
+  ctx.lineTo(0, 0)
+  ctx.stroke()
+}
+
 let string = "l"
 
 
-function iterate() {
+function iterate(rules) {
   let chars = string.split("")
   let newChars = chars.map((char) => {
     if (rules[char] !== undefined) {
@@ -87,7 +110,9 @@ function draw() {
   step++
   step = step % 24
   if (!(step % 4)) {
-    iterate()
+    iterate(rules)
+  } else {
+    iterate(growthRules)
   }
   if (step === 0) {
     string = "l"
@@ -101,8 +126,10 @@ function draw() {
   })
 
   ctx.restore()
-
-  setTimeout(draw, 1000 / 3)
+  if (step === 23)
+    setTimeout(draw, 2000)
+  else
+    setTimeout(draw, 1000 / 3)
 }
 
 draw()
