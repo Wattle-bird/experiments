@@ -47,7 +47,7 @@ let actions = {
   f() {
     ctx.beginPath()
     ctx.fillStyle = "pink"
-    ctx.arc(0, 10, 6, 0, 7)
+    ctx.arc(0, 10, Math.max(0, -16+step), 0, 7)
     ctx.fill()
   },
   "+": () => {
