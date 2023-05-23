@@ -9,4 +9,3 @@ ctx.translate(500, 1000)
 let tree = new Tree();
 upto(5, () => tree.iterate())
 tree.draw(ctx)
-console.log(tree.items)
