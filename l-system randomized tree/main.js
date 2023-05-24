@@ -1,10 +1,7 @@
 // Options
 const treeRulesOptions = makeTreeRulesOptions()
 
-const treeRendererOptions = {
-  swayAngle: 0.05,
-  swaySpeed: 0.01,
-}
+const treeRendererOptions = makeTreeRendererOptions()
 
 const initialState = 'b l'
 const iterations = 4
@@ -36,6 +33,7 @@ function main() {
     engine.state = 'b l'
     upto(iterations, () => engine.iterate())
     rules.options = makeTreeRulesOptions()
+    renderer.options = makeTreeRendererOptions()
   }, 2000)
 }
 

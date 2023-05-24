@@ -22,8 +22,8 @@ class TreeRenderer {
 
   l(ctx) {
     ctx.beginPath()
-    ctx.strokeStyle = "#00aa0099"
-    ctx.lineWidth = 30
+    ctx.strokeStyle = this.options.leafColor
+    ctx.lineWidth = this.options.leafWidth
     ctx.lineCap = "round"
     ctx.moveTo(0, -5)
     ctx.translate(0, -30)
@@ -32,11 +32,11 @@ class TreeRenderer {
   }
 
   ["+"](ctx) {
-    ctx.rotate(-0.5+this.sway)
+    ctx.rotate(-this.options.angle+this.sway)
   }
 
   ["-"](ctx) {
-    ctx.rotate(0.5+this.sway)
+    ctx.rotate(this.options.angle+this.sway)
   }
 
   ["("](ctx) {
@@ -49,5 +49,12 @@ class TreeRenderer {
 }
 
 function makeTreeRendererOptions() {
-  
+  return {
+    swayAngle: 0.05,
+    swaySpeed: 0.01,
+    leafColor: `hsl(${rand(180) - 30} ${rand(100)}% ${rand(60)+ 40}%)`,
+    leafWidth: rand(40) + 20,
+    leafLength: rand(40),
+    angle: rand(1) + 0.3
+  }
 }
