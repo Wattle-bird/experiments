@@ -15,7 +15,7 @@ class LSystem {
     let newItems = items.map((item) => {
       let type = item[0]
       if (this.rules[type] !== undefined) {
-        return this.rules[type](item)
+        return this.rules[type](item, this.step)
       } else {
         return item
       }

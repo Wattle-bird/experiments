@@ -31,6 +31,7 @@ function main() {
 
   setInterval(() => {
     engine.state = 'b l'
+    engine.step = 0
     upto(iterations, () => engine.iterate())
     rules.options = makeTreeRulesOptions()
     renderer.options = makeTreeRendererOptions()

@@ -3,20 +3,23 @@ class TreeRules {
     this.options = options
   }
 
-  b() {
+  b(item, step) {
     let result = 'b'
-    if (rand(1) < this.options.branchSplitChance) {
+    let splitChance = this.options.branchSplitChance + step * this.options.branchSplitChanceDelta
+    if (rand(1) < splitChance) {
       result += ' ( + b l )'
     }
-    if (rand(1) < this.options.branchSplitChance) {
+    if (rand(1) < splitChance) {
       result += ' ( - b l )'
     }
     result += ' b'
     return result
   }
 
-  l() {
-    if (rand(1) < this.options.leafSplitChance) {
+  l(item, step) {
+    let splitChance = this.options.leafSplitChance + step * this.options.leafSplitChanceDelta
+
+    if (rand(1) < splitChance) {
       return '( + b l ) ( - b l )'
     }
     return 'l'
@@ -26,6 +29,8 @@ class TreeRules {
 function makeTreeRulesOptions() {
   return {
     leafSplitChance: 0.3 + rand(0.4),
-    branchSplitChance: 0.4 + rand(0.3)
+    branchSplitChance: 0.4 + rand(0.3), 
+    leafSplitChanceDelta: -0.1 + rand(0.2), 
+    branchSplitChanceDelta: -0.1 + rand(0.2)
   }
 }
