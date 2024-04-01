@@ -4,7 +4,7 @@ const treeRulesOptions = makeTreeRulesOptions()
 const treeRendererOptions = makeTreeRendererOptions()
 
 const initialState = 'b l'
-const iterations = 4
+const iterations = 60
 
 
 
