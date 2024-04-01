@@ -1,0 +1,99 @@
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  #output {
+    font-family: monospace;
+    font-size: 20px;
+  }
+  button {
+    font-family: monospace;
+    font-size: 16px;
+    margin: 5px;
+  }
+</style>
+</head>
+<div id="output"></div>
+<div id="input"></div>
+<script>
+const output = {
+  div: document.querySelector('#output'),
+  addRaw(html) {
+    this.div.innerHTML += html;
+  },
+  addText(text) {
+    this.addRaw(text + '<br>')
+  },
+  clear() {
+    this.div.innerHTML = '';
+  }
+}
+
+const input = {
+  div: document.querySelector('#input'),
+  add(buttonText, callback) {
+    let button = document.createElement('button')
+    button.innerHTML = buttonText;
+    button.onclick = callback;
+    this.div.appendChild(button);
+  },
+  clear() {
+    this.div.innerHTML = '';
+  }
+
+}
+
+function shuffle(array) {
+  // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+  let currentIndex = array.length,  randomIndex;
+
+  // While there remain elements to shuffle.
+  while (currentIndex != 0) {
+
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
+}
+
+class Card {
+  constructor(number, suit) {
+    this.number = number + ""; // 2-10, jkqa
+    this.suit = suit; // hdcs
+  }
+
+  toString() {
+    let str = ""
+    if (this.suit == "c") str = "♣";
+    if (this.suit == "s") str = "♠";
+    if (this.suit == "h") str = "<span style='color: red;'>♥</span>";
+    if (this.suit == "d") str = "<span style='color: red;'>♦</span>";
+    str += this.number.toUpperCase();
+    return str;
+  }
+}
+
+let deck = [];
+['h', 'd', 'c', 's'].forEach((suit) => {
+  ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q', 'k', 'a'].forEach((number) => {
+    deck.push(new Card(number, suit))
+  })
+})
+
+function deal() {
+  input.clear();
+  shuffle(deck);
+  deck.forEach((card) => output.addRaw(card.toString() + " "))
+  output.addText('');
+  input.add('Deal Again', deal);
+}
+
+deal();
+
+
+</script>
