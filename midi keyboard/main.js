@@ -17,10 +17,10 @@ for (let i = 1; i <= 10; i++) {
 }
 
 const rowStartNotes = [
-  noteNames.indexOf('D4') + 7,
-  noteNames.indexOf('G4') + 7,
-  noteNames.indexOf('B4') + 7,
-  noteNames.indexOf('E5') + 7,  
+  noteNames.indexOf('D6'),
+  noteNames.indexOf('G6'),
+  noteNames.indexOf('B6'),
+  noteNames.indexOf('E7'),
 ]
 
 function keyLocation(key) {
@@ -45,10 +45,22 @@ function locationToNote(loc) {
 
 document.addEventListener("keydown", (ev) => {
   if (ev.repeat) return;
-  noteStart(locationToNote(keyLocation(ev.code)))
+  const note = locationToNote(keyLocation(ev.code))
+
+  if (synth)
+    noteStart(note);
+  if (midi)
+    midiKeyDown(note);
+
   ev.preventDefault()
 })
 
 document.addEventListener("keyup", (ev) => {
-  noteEnd(locationToNote(keyLocation(ev.code)))
+  const note = locationToNote(keyLocation(ev.code))
+
+  if (synth)
+    noteEnd(note);
+  if (midi)
+    midiKeyUp(note);
+
 })
