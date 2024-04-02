@@ -1,0 +1,77 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<div id="output"></div>
+<div id="input"></div>
+<script>
+const output = {
+  div: document.querySelector('#output'),
+  addRaw(html) {
+    this.div.innerHTML += html;
+  },
+  addText(text) {
+    this.addRaw(text + '<br>')
+  },
+  clear() {
+    this.div.innerHTML = '';
+  }
+}
+
+const input = {
+  div: document.querySelector('#input'),
+  add(buttonText, callback) {
+    let button = document.createElement('button')
+    button.innerHTML = buttonText;
+    button.onclick = callback;
+    this.div.appendChild(button);
+  },
+  clear() {
+    this.div.innerHTML = '';
+  }
+
+}
+
+let hiddenNumber, playerNumber;
+function numberGame() {
+  hiddenNumber = Math.ceil(Math.random()*10);
+  playerNumber = hiddenNumber;
+  while (playerNumber === hiddenNumber) {
+    playerNumber = Math.ceil(Math.random()*10);
+  }
+
+  output.clear();
+  input.clear();
+  output.addText("Let's play a game.");
+  output.addText("Your number is " + playerNumber + ".");
+  output.addText("My number is a random number from 1 to 10.");
+  output.addText("Is mine higher or lower than yours?");
+  input.add("Lower", lower);
+  input.add("Higher", higher);
+
+}
+
+function lower() {
+  input.clear();
+  if (hiddenNumber < playerNumber) {
+    output.addText(`Correct! My number is ${hiddenNumber}.`);
+  } else {
+    output.addText(`Wrong! My number is ${hiddenNumber}.`);
+  }
+  playAgain();
+}
+
+function higher() {
+  input.clear();
+  if (hiddenNumber > playerNumber) {
+    output.addText(`Correct! My number is ${hiddenNumber}.`);
+  } else {
+    output.addText(`Wrong! My number is ${hiddenNumber}.`);
+  }
+  playAgain();
+}
+
+function playAgain() {
+  output.addText('Would you like to play again?');
+  input.add("Yes", numberGame);
+}
+
+numberGame();
+</script>

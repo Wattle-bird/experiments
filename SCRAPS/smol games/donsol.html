@@ -1,0 +1,199 @@
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  #output {
+    font-family: monospace;
+    font-size: 20px;
+  }
+  button {
+    font-family: monospace;
+    font-size: 16px;
+    margin: 5px;
+  }
+</style>
+</head>
+<div id="output"></div>
+<div id="input"></div>
+<script>
+const output = {
+  div: document.querySelector('#output'),
+  addRaw(html) {
+    this.div.innerHTML += html;
+  },
+  addText(text) {
+    this.addRaw(text + '<br>')
+  },
+  clear() {
+    this.div.innerHTML = '';
+  }
+}
+
+const input = {
+  div: document.querySelector('#input'),
+  add(buttonText, callback) {
+    let button = document.createElement('button')
+    button.innerHTML = buttonText;
+    button.onclick = callback;
+    this.div.appendChild(button);
+  },
+  clear() {
+    this.div.innerHTML = '';
+  }
+
+}
+
+function shuffle(array) {
+  // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+  let currentIndex = array.length,  randomIndex;
+
+  // While there remain elements to shuffle.
+  while (currentIndex != 0) {
+
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
+}
+
+class Card {
+  constructor(number, suit) {
+    this.number = number + ""; // 2-10, jkqa
+    this.suit = suit; // hdcs
+  }
+
+  toString() {
+    if (this.suit == "joker") return "joker";
+    let str = ""
+    if (this.suit == "c") str = "♣";
+    if (this.suit == "s") str = "♠";
+    if (this.suit == "h") str = "<span style='color: red;'>♥</span>";
+    if (this.suit == "d") str = "<span style='color: red;'>♦</span>";
+    str += this.number.toUpperCase();
+    return str;
+  }
+}
+
+function createDeck() {
+  let deck = [];
+  ['h', 'd', 'c', 's'].forEach((suit) => {
+    ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q', 'k', 'a'].forEach((number) => {
+      deck.push(new Card(number, suit));
+    })
+  })
+  deck.push(new Card("joker", "joker"));
+  deck.push(new Card("joker", "joker"));
+
+  return deck;
+}
+
+redValues = {
+  "2": 2,
+  "3": 3,
+  "4": 4,
+  "5": 5,
+  "6": 6,
+  "7": 7,
+  "8": 8,
+  "9": 9,
+  "10": 10,
+  "j": 11,
+  "q": 11,
+  "k": 11,
+  "a": 11,
+}
+
+blackValues = {
+  "2": 2,
+  "3": 3,
+  "4": 4,
+  "5": 5,
+  "6": 6,
+  "7": 7,
+  "8": 8,
+  "9": 9,
+  "10": 10,
+  "j": 11,
+  "q": 13,
+  "k": 15,
+  "a": 17,
+  "joker": 21
+}
+
+let deck;
+let hp;
+let shield, shieldDamage;
+let field = [];
+let canRun;
+let canDrinkPotion;
+
+
+function newGame() {
+  input.clear();
+  output.clear();
+  deck = createDeck();
+  shuffle(deck);
+  hp = 21;
+  shield = 0;
+  shieldDamage = 0;
+  canRun = true;
+  canDrinkPotion = true;
+
+  dealField();
+
+  takeTurn();
+}
+
+function dealField() {
+  field.push(deck.pop());
+  field.push(deck.pop());
+  field.push(deck.pop());
+  field.push(deck.pop());
+}
+
+function takeTurn() {
+  input.clear();
+  output.addText('===');wwdwdwww
+  let status = `HP: ${hp}${canDrinkPotion?"":"*"} SHIELD: ${shield} `;
+  if (shieldDamage > 0) status += `(${shieldDamage}) `;
+  status += `Cards left: ${deck.length}`;
+  output.addText(status);
+  output.addText("You see before you:");
+
+  field.forEach((card, index) => {
+    input.add(card.toString(), ()=>pickCard(index));
+  })
+}
+
+function pickCard(index) {
+  output.clear();
+  let card = field.splice(index, 1)[0];
+  if (card.suit == "d") {
+    shield = redValues[card.number];
+    shieldDamage = 0;
+    output.addText(`You pick up a shield of ${redValues[card.number]}.`);
+    canDrinkPotion = true;
+  } else if (card.suit == "h") {
+    output.addText(`You drink a potion of ${redValues[card.number]}.`);
+    if (canDrinkPotion) {
+      let newHp = hp + redValues[card.number];
+      if (newHp > 21) newHp = 21;
+      let healedBy = newHp - hp;
+      hp = newHp;
+      output.addText(`You heal ${healedBy} HP.`);
+      canDrinkPotion = false;
+    } else {
+      output.addText("You feel sick from drinking too many potions. Nothing happens.");
+    }
+  }
+  takeTurn();
+}
+
+
+newGame();
+</script>
