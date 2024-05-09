@@ -62,6 +62,8 @@ document.addEventListener("keydown", (ev) => {
     return;
   }
 
+  if (keysPressed.get(ev.code)) return; // already pressed
+
   const loc = keyLocation(ev.code)
   if (loc === -1) return;
 
@@ -89,6 +91,7 @@ document.addEventListener("keyup", (ev) => {
   }
 
   const note = keysPressed.get(ev.code)
+  if (note === undefined) return;
   keysPressed.delete(ev.code)
 
   if (synth)
