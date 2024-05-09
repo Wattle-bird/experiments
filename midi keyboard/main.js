@@ -17,10 +17,10 @@ for (let i = 1; i <= 10; i++) {
 }
 
 const rowStartNotes = [
-  noteNames.indexOf('D6'),
-  noteNames.indexOf('G6'),
-  noteNames.indexOf('B6'),
-  noteNames.indexOf('E7'),
+  noteNames.indexOf('D4'),
+  noteNames.indexOf('G4'),
+  noteNames.indexOf('B4'),
+  noteNames.indexOf('E5'),
 ]
 
 function keyLocation(key) {

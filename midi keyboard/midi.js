@@ -17,7 +17,7 @@ function midiKeyDown(note) {
   midi.outputs.forEach((output) => {
     console.log("sending note on for " + note)
     console.log(output)
-    output.send([0x90, note, 127])
+    output.send([0x90, note + 24, 127])
   })
 }
 
@@ -25,6 +25,6 @@ function midiKeyUp(note) {
   midi.outputs.forEach((output) => {
     console.log("sending note off for " + note)
     console.log(output)
-    output.send([0x80, note, 127])
+    output.send([0x80, note + 24, 127])
   })
 }
